@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% load static %}
+
+{# ----- بلوک Header ----- #}
+{% block header %}
+    {# وارد کردن هدر اصلی سایت #}
+    {% include 'header.html' %}
+{% endblock %}
+
+{# ----- بلوک Content ----- #}
+{% block content %}
+<div class="container section-padding-100">
+    
+    {# ----- عنوان دسته‌بندی ----- #}
+    <h2 class="mb-4">{{ category.name }}</h2>
+
+    {# ----- شبکه محصولات (Product Grid) ----- #}
+    <div class="row">
+        {% for product in products %}
+        
+        {# ----- کارت محصول تک ----- #}
+        <div class="col-12 col-sm-6 col-lg-4 mb-4">
+            <div class="card h-100">
+                
+                {# تصویر محصول #}
+                <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+                
+                <div class="card-body">
+                    
+                    {# نام محصول #}
+                    <h5 class="card-title">{{ product.name }}</h5>
+                    
+                    {# توضیح محصول #}
+                    <p class="card-text">{{ product.description }}</p>
+                    
+                    {# قیمت محصول با جداکننده هزارگان #}
+                    <p class="card-text">قیمت: {{ product.price|intcomma }} تومان</p>
+
+                    {# ----- انتخاب تعداد محصول (Quantity Selector) ----- #}
+                    <div class="input-group mb-3">
+                        <button class="btn btn-outline-secondary" type="button"
+                            onclick="updateQuantity('{{ product.slug }}', -1)">-</button>
+                        <input type="number" class="form-control text-center" id="quantity-{{ product.slug }}" value="1"
+                            min="1">
+                        <button class="btn btn-outline-secondary" type="button"
+                            onclick="updateQuantity('{{ product.slug }}', 1)">+</button>
+                    </div>
+
+                    {# ----- دکمه افزودن به سبد خرید ----- #}
+                    <button class="btn bueno-btn w-100" onclick="addToCart('{{ product.slug }}')">
+                        افزودن به سبد خرید
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        {% empty %}
+        {# پیام در صورتی که محصولی در دسته‌بندی موجود نباشد #}
+        <p>محصولی در این دسته‌بندی یافت نشد.</p>
+        {% endfor %}
+    </div>
+</div>
+
+{# ----- اسکریپت مدیریت تعداد و افزودن به سبد خرید ----- #}
+<script>
+    // بروزرسانی تعداد محصول
+    function updateQuantity(productSlug, change) {
+        let input = document.getElementById('quantity-' + productSlug);
+        let currentValue = parseInt(input.value);
+        if (currentValue + change >= 1) {
+            input.value = currentValue + change;
+        }
+    }
+
+    // افزودن محصول به سبد خرید با Fetch API
+    function addToCart(productSlug) {
+        let quantity = document.getElementById('quantity-' + productSlug).value;
+        fetch('/add-to-cart/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify({
+                product_slug: productSlug,
+                quantity: quantity
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('محصول به سبد خرید اضافه شد!');
+                location.reload();  // بارگذاری مجدد صفحه
+                // بروزرسانی تعداد آیتم‌های سبد خرید به صورت دینامیک
+                fetch('/cart-item-count/')
+                    .then(response => response.json())
+                    .then(data => {
+                        document.querySelector('.cart-count').textContent = data.cart_item_count;
+                    });
+            } else {
+                alert('خطایی رخ داد: ' + data.message);
+            }
+        });
+    }
+</script>
+{% endblock %}

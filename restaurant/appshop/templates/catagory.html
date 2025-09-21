@@ -1,0 +1,227 @@
+{% extends 'base.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>قالب رایگان سایت رستوران Bueno :: دریافت شده از وب روبیک</title>
+    <!-- Stylesheet اصلی سایت -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body class="rtl">
+
+    {# بلوک Preloader - نمایش بارگذاری سایت #}
+    {% block preloader %}
+    <div class="preloader d-flex align-items-center justify-content-center">
+        <div class="preloader-content">
+            <h3>در حال بارگزاری..</h3>
+            <div id="cooking">
+                <div class="bubble"></div>
+                <div class="bubble"></div>
+                <div class="bubble"></div>
+                <div class="bubble"></div>
+                <div class="bubble"></div>
+                <div id="area">
+                    <div id="sides">
+                        <div id="pan"></div>
+                        <div id="handle"></div>
+                    </div>
+                    <div id="pancake">
+                        <div id="pastry"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+
+    {# بلوک Header - شامل ناوبری اصلی و لوگو #}
+    {% block header %}
+    {% include 'header.html' %}
+    {% endblock %}
+
+    {# بلوک Search - نوار جستجو (در صورت نیاز می‌توان اضافه کرد) #}
+    {% block search %}
+    {% endblock %}
+
+    {# بلوک Catagory - نمایش دسته‌بندی‌های غذایی #}
+    {% block catagory %}
+    <div class="post-catagory section-padding-100">
+        <div class="container">
+            <div class="row">
+                {# دسته‌بندی غذای سلامتی #}
+                <div class="col-12 col-sm-6 col-lg-4">
+                    <div class="single-post-catagory mb-30">
+                        <img src="{% static 'img/bg-img/4.jpg' %}" alt="">
+                        <div class="catagory-content-bg">
+                            <div class="catagory-content">
+                                <a href="{% url 'category_detail' 'healthy-food' %}" class="post-tag">بهترین</a>
+                                <a href="{% url 'category_detail' 'healthy-food' %}" class="post-title">غذای سلامتی</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {# دسته‌بندی غذای ارگانیک #}
+                <div class="col-12 col-sm-6 col-lg-4">
+                    <div class="single-post-catagory mb-30">
+                        <img src="{% static 'img/bg-img/5.jpg' %}" alt="">
+                        <div class="catagory-content-bg">
+                            <div class="catagory-content">
+                                <a href="{% url 'category_detail' 'organic-food' %}" class="post-tag">بهترین</a>
+                                <a href="{% url 'category_detail' 'organic-food' %}" class="post-title">غذای ارگانیک</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {# دسته‌بندی خوراک سبزیجات #}
+                <div class="col-12 col-sm-6 col-lg-4">
+                    <div class="single-post-catagory mb-30">
+                        <img src="{% static 'img/bg-img/6.jpg' %}" alt="">
+                        <div class="catagory-content-bg">
+                            <div class="catagory-content">
+                                <a href="{% url 'category_detail' 'vegetable-dish' %}" class="post-tag">بهترین</a>
+                                <a href="{% url 'category_detail' 'vegetable-dish' %}" class="post-title">خوراک سبزیجات</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {# دسته‌بندی خوراک مرغ #}
+                <div class="col-12 col-sm-6 col-lg-4">
+                    <div class="single-post-catagory mb-30">
+                        <img src="{% static 'img/bg-img/17.jpg' %}" alt="">
+                        <div class="catagory-content-bg">
+                            <div class="catagory-content">
+                                <a href="{% url 'category_detail' 'chicken-dish' %}" class="post-tag">بهترین</a>
+                                <a href="{% url 'category_detail' 'chicken-dish' %}" class="post-title">خوراک مرغ</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {# دسته‌بندی پیتزا #}
+                <div class="col-12 col-sm-6 col-lg-4">
+                    <div class="single-post-catagory mb-30">
+                        <img src="{% static 'img/bg-img/18.jpg' %}" alt="">
+                        <div class="catagory-content-bg">
+                            <div class="catagory-content">
+                                <a href="{% url 'category_detail' 'pizza' %}" class="post-tag">بهترین</a>
+                                <a href="{% url 'category_detail' 'pizza' %}" class="post-title">پیتزا</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {# دسته‌بندی فست‌فود #}
+                <div class="col-12 col-sm-6 col-lg-4">
+                    <div class="single-post-catagory mb-30">
+                        <img src="{% static 'img/bg-img/19.jpg' %}" alt="">
+                        <div class="catagory-content-bg">
+                            <div class="catagory-content">
+                                <a href="{% url 'category_detail' 'fast-food' %}" class="post-tag">بهترین</a>
+                                <a href="{% url 'category_detail' 'fast-food' %}" class="post-title">فست فود</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {# دسته‌بندی برگرها #}
+                <div class="col-12 col-sm-6 col-lg-4">
+                    <div class="single-post-catagory mb-30">
+                        <img src="{% static 'img/bg-img/20.jpg' %}" alt="">
+                        <div class="catagory-content-bg">
+                            <div class="catagory-content">
+                                <a href="{% url 'category_detail' 'burgers' %}" class="post-tag">بهترین</a>
+                                <a href="{% url 'category_detail' 'burgers' %}" class="post-title">برگرها</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {# دسته‌بندی دسر #}
+                <div class="col-12 col-sm-6 col-lg-4">
+                    <div class="single-post-catagory mb-30">
+                        <img src="{% static 'img/bg-img/21.jpg' %}" alt="">
+                        <div class="catagory-content-bg">
+                            <div class="catagory-content">
+                                <a href="{% url 'category_detail' 'desserts' %}" class="post-tag">بهترین</a>
+                                <a href="{% url 'category_detail' 'desserts' %}" class="post-title">دسر</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {# دسته‌بندی سوپ #}
+                <div class="col-12 col-sm-6 col-lg-4">
+                    <div class="single-post-catagory mb-30">
+                        <img src="{% static 'img/bg-img/22.jpg' %}" alt="">
+                        <div class="catagory-content-bg">
+                            <div class="catagory-content">
+                                <a href="{% url 'category_detail' 'soups' %}" class="post-tag">بهترین</a>
+                                <a href="{% url 'category_detail' 'soups' %}" class="post-title">سوپ</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {# بخش Pagination #}
+            <div class="row">
+                <div class="col-12">
+                    <div class="pagination-area mt-70">
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination">
+                                <li class="page-item"><a class="page-link" href="#">01</a></li>
+                                <li class="page-item active"><a class="page-link" href="#">02</a></li>
+                                <li class="page-item"><a class="page-link" href="#">03</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+
+            {# دکمه بازگشت به صفحه اصلی #}
+            <a href="{% url 'home' %}" class="btn bueno-btn mt-3">بازگشت به صفحه اصلی</a>
+        </div>
+    </div>
+    {% endblock %}
+
+    {# بخش مطالب پربازدید (Trending) #}
+    <div class="treading-post-area" id="treadingPost">
+        <div class="close-icon">
+            <i class="fa fa-times"></i>
+        </div>
+        <h4>مطالب پربازدید</h4>
+
+        {# لیست پست‌ها (تک تک پست‌ها) #}
+        <div class="single-blog-post style-1 d-flex flex-wrap mb-30">
+            <div class="blog-thumbnail">
+                <img src="{% static 'img/bg-img/9.jpg' %}" alt="">
+            </div>
+            <div class="blog-content">
+                <a href="#" class="post-tag">بهترین</a>
+                <a href="#" class="post-title">صبحانه اختصاصی</a>
+                <div class="post-meta"></div>
+            </div>
+        </div>
+        {# ... بقیه پست‌ها مشابه همین ساختار هستند ... #}
+
+    </div>
+
+    {# بلوک محتوا اصلی (می‌توان شامل trending.html یا بخش‌های دیگر کرد) #}
+    {% block content %}
+    {% include 'trending.html' %}
+    {% endblock %}
+
+    {# بلوک Footer #}
+    {% block footer %}
+    {% include 'footer.html' %}
+    {% endblock %}
+
+    {# اسکریپت‌های مورد نیاز #}
+    <script src="{% static 'js/jquery/jquery-2.2.4.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap/popper.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/plugins/plugins.js' %}"></script>
+    <script src="{% static 'js/scripts.js' %}"></script>
+</body>
+
+</html>

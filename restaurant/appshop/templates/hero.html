@@ -1,0 +1,83 @@
+{% load static %}
+
+<!-- ========================= Hero Area Start ========================= -->
+<div class="hero-area">
+
+    {# ----- اسلایدر Hero Post با Owl Carousel ----- #}
+    <div class="hero-post-slides owl-carousel">
+
+        {# ----- اسلاید اول ----- #}
+        <div class="single-slide">
+            
+            {# تصویر اسلاید ----- #}
+            <div class="blog-thumbnail">
+                <a href="{% url 'category' %}">
+                    <img src="{% static 'img/bg-img/1.jpg' %}" alt="Hero Slide 1">
+                </a>
+            </div>
+
+            {# محتوای روی تصویر ----- #}
+            <a href="{% url 'category' %}">
+                <div class="blog-content-bg">
+                    <div class="blog-content">
+                        <a href="{% url 'category' %}" class="post-tag">دسته بندی ها</a>
+                        <a href="{% url 'category' %}" class="post-title">برای مشاهده انواع غذاها کلیک کنید</a>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        {# ----- اسلاید دوم ----- #}
+        <div class="single-slide">
+            <div class="blog-thumbnail">
+                <a href="{% url 'category' %}">
+                    <img src="{% static 'img/bg-img/2.jpg' %}" alt="Hero Slide 2">
+                </a>
+            </div>
+            <a href="{% url 'category' %}">
+                <div class="blog-content-bg">
+                    <div class="blog-content">
+                        <a href="{% url 'category' %}" class="post-tag">دسته بندی ها</a>
+                        <a href="{% url 'category' %}" class="post-title">برای مشاهده انواع غذاها کلیک کنید</a>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        {# ----- اسلاید سوم ----- #}
+        <div class="single-slide">
+            <div class="blog-thumbnail">
+                <a href="{% url 'category' %}">
+                    <img src="{% static 'img/bg-img/3.jpg' %}" alt="Hero Slide 3">
+                </a>
+            </div>
+            <a href="{% url 'category' %}">
+                <div class="blog-content-bg">
+                    <div class="blog-content">
+                        <a href="{% url 'category' %}" class="post-tag">دسته بندی ها</a>
+                        <a href="{% url 'category' %}" class="post-title">برای مشاهده انواع غذاها کلیک کنید</a>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        {# ----- اسلاید چهارم (تکراری از اسلاید سوم) ----- #}
+        <div class="single-slide">
+            <div class="blog-thumbnail">
+                <a href="{% url 'category' %}">
+                    <img src="{% static 'img/bg-img/3.jpg' %}" alt="Hero Slide 4">
+                </a>
+            </div>
+            <a href="{% url 'category' %}">
+                <div class="blog-content-bg">
+                    <div class="blog-content">
+                        <a href="{% url 'category' %}" class="post-tag">دسته بندی ها</a>
+                        <a href="{% url 'category' %}" class="post-title">برای مشاهده انواع غذاها کلیک کنید</a>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+    </div>
+</div>
+<!-- ========================= Hero Area End ========================= -->

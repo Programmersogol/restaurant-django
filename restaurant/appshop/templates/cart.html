@@ -1,0 +1,174 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+{% load cart_extras %}
+
+{% block content %}
+<div class="container section-padding-100">
+    <!-- عنوان صفحه سبد خرید -->
+    <h2 class="mb-4">سبد خرید</h2>
+
+    <div class="cart-items-section">
+        {% if cart %}
+            <!-- لیست آیتم‌های سبد خرید -->
+            <div class="cart-items">
+                {% for item in cart.cartitem_set.all %}
+                <!-- کارت نمایش هر آیتم سبد -->
+                <div class="cart-item-card mb-3" data-item-id="{{ item.id }}">
+                    <div class="row align-items-center">
+                        <!-- تصویر محصول -->
+                        <div class="col-12 col-md-2">
+                            <img src="{{ item.product.image.url|default:'/static/images/default-product.jpg' }}" 
+                                 alt="{{ item.product.name }}" 
+                                 class="img-fluid cart-item-image">
+                        </div>
+
+                        <!-- اطلاعات محصول -->
+                        <div class="col-12 col-md-4">
+                            <h5 class="cart-item-title">{{ item.product.name }}</h5>
+                            <p class="cart-item-price">قیمت واحد: {{ item.product.price|floatformat:0|intcomma }} تومان</p>
+                        </div>
+
+                        <!-- کنترل تعداد (افزایش/کاهش) -->
+                        <div class="col-12 col-md-3">
+                            <div class="input-group quantity-group">
+                                <button class="btn btn-outline-secondary btn-sm" onclick="updateCartItem('{{ item.id }}', -1)">-</button>
+                                <input type="number" class="form-control form-control-sm text-center" value="{{ item.quantity }}" min="1" readonly>
+                                <button class="btn btn-outline-secondary btn-sm" onclick="updateCartItem('{{ item.id }}', 1)">+</button>
+                            </div>
+                        </div>
+
+                        <!-- جمع قیمت و دکمه حذف -->
+                        <div class="col-12 col-md-3 text-md-left text-center">
+                            <p class="cart-item-total">
+                                جمع: {{ item.quantity|multiply:item.product.price|floatformat:0|intcomma }} تومان
+                            </p>
+                            <button class="btn btn-danger btn-sm" onclick="removeCartItem('{{ item.id }}')">حذف</button>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- بخش خلاصه سفارش -->
+            <div class="cart-summary mt-5">
+                <h4 class="mb-3">جمع‌بندی سفارش</h4>
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>جمع کل</th>
+                            <td id="total-price-cell">{{ total_price|floatformat:0|intcomma }} تومان</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="text-left">
+                    <a href="{% url 'checkout' %}" class="btn bueno-btn">ادامه به پرداخت</a>
+                </div>
+            </div>
+        {% else %}
+            <!-- پیام خالی بودن سبد خرید -->
+            <div class="empty-cart text-center">
+                <p>سبد خرید شما خالی است.</p>
+                <a href="{% url 'category' %}" class="btn bueno-btn mt-3">بازگشت به فروشگاه</a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+// افزایش یا کاهش تعداد آیتم‌ها
+function updateCartItem(itemId, change) {
+    const card = document.querySelector(`.cart-item-card[data-item-id="${itemId}"]`);
+    if (!card) return;
+
+    const input = card.querySelector('.quantity-group input');
+    const currentQuantity = parseInt(input.value);
+    if (currentQuantity + change < 1) return;
+
+    // ارسال درخواست به سرور برای بروزرسانی تعداد
+    fetch('/update-cart-item/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: JSON.stringify({
+            item_id: itemId,
+            quantity: currentQuantity + change
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (!data.success) {
+            alert('خطایی رخ داد: ' + data.message);
+            return;
+        }
+
+        // بروزرسانی نمایش تعداد و جمع قیمت
+        input.value = data.quantity;
+        card.querySelector('.cart-item-total').textContent = `جمع: ${(data.quantity * data.price).toLocaleString('fa-IR')} تومان`;
+        document.querySelector('#total-price-cell').textContent = `${data.total_price.toLocaleString('fa-IR')} تومان`;
+        updateCartCount();
+    })
+    .catch(() => alert('خطای شبکه! لطفاً دوباره تلاش کنید.'));
+}
+
+// حذف آیتم از سبد خرید
+function removeCartItem(itemId) {
+    if (!confirm('آیا مطمئن هستید که می‌خواهید این آیتم را حذف کنید؟')) return;
+
+    fetch('/remove-cart-item/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: JSON.stringify({ item_id: itemId })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (!data.success) {
+            alert('خطایی رخ داد: ' + data.message);
+            return;
+        }
+
+        // حذف کارت آیتم از DOM
+        const itemCard = document.querySelector(`.cart-item-card[data-item-id="${itemId}"]`);
+        if (itemCard) itemCard.remove();
+
+        // بروزرسانی جمع کل
+        document.querySelector('#total-price-cell').textContent = `${data.total_price.toLocaleString('fa-IR')} تومان`;
+        updateCartCount();
+
+        // اگر آیتمی باقی نماند، پیام خالی بودن نمایش داده شود
+        const cartItems = document.querySelectorAll('.cart-item-card');
+        if (cartItems.length === 0) {
+            document.querySelector('.cart-items-section').innerHTML = `
+                <div class="empty-cart text-center">
+                    <p>سبد خرید شما خالی است.</p>
+                    <a href="{% url 'category' %}" class="btn bueno-btn mt-3">بازگشت به فروشگاه</a>
+                </div>
+            `;
+        }
+    })
+    .catch(() => alert('خطای شبکه! لطفاً دوباره تلاش کنید.'));
+}
+
+// بروزرسانی تعداد آیتم‌ها در آیکون سبد خرید (هدر سایت)
+function updateCartCount() {
+    fetch('/cart-item-count/')
+        .then(response => response.json())
+        .then(data => {
+            const cartCount = document.querySelector('.cart-count');
+            if (!cartCount) return;
+
+            if (data.cart_item_count > 0) {
+                cartCount.textContent = data.cart_item_count;
+                cartCount.style.display = 'inline-flex';
+            } else {
+                cartCount.style.display = 'none';
+            }
+        });
+}
+</script>
+{% endblock %}

@@ -1,0 +1,68 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- لود آیکون‌ها از Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" 
+          integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" 
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- عنوان صفحه (قابل تغییر در صفحات فرزند) -->
+    <title>{% block title %}رستوران{% endblock %}</title>
+
+    <!-- استایل اصلی پروژه -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <!-- امکان اضافه کردن استایل یا متاتگ اضافه توسط صفحات فرزند -->
+    {% block extra_head %}{% endblock %}
+</head>
+
+<body class="rtl">
+
+    <!-- نمایش پیام‌های فلاش (success، error و ...) -->
+    {% if messages %}
+    <div class="container mt-3">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- بلاک لودر صفحه (در صورت نیاز در صفحات فرزند پر می‌شود) -->
+    {% block preloader %}{% endblock %}
+
+    <!-- بلاک هدر سایت -->
+    {% block header %}{% endblock %}
+
+    <!-- بلاک نوار جستجو -->
+    {% block search %}{% endblock %}
+
+    <!-- بلاک دسته‌بندی‌ها -->
+    {% block catagory %}{% endblock %}
+
+    <!-- بلاک محتوای اصلی -->
+    {% block content %}{% endblock %}
+
+    <!-- بلاک فوتر سایت -->
+    {% block footer %}{% endblock %}
+
+    <!-- اسکریپت‌های اصلی پروژه -->
+    <script src="{% static 'js/jquery/jquery-2.2.4.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap/popper.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/plugins/plugins.js' %}"></script>
+    <script src="{% static 'js/scripts.js' %}"></script>
+
+    <!-- امکان اضافه کردن اسکریپت‌های اضافی در صفحات فرزند -->
+    {% block extra_scripts %}{% endblock %}
+</body>
+
+</html>

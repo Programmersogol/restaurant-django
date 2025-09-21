@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}ویرایش کاربر{% endblock %}
+
+
+{% block header %}
+
+{% include 'header.html' %} {# درج هدر اصلی سایت #}
+
+{% endblock %}
+{% block content %}
+<!-- Header Section: عنوان و توضیح صفحه ویرایش کاربر -->
+<header class="bg-success py-5" style="background: linear-gradient(135deg, #28a745, #4caf50);">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder animate__animated animate__fadeIn">ویرایش کاربر</h1>
+            <p class="lead fw-normal text-white-75 mb-0 animate__animated animate__fadeIn"
+                style="animation-delay: 0.3s;">اطلاعات جدید خود را وارد کنید</p>
+        </div>
+    </div>
+</header>
+
+
+<!-- Form Section: فرم ویرایش اطلاعات کاربر -->
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow-lg border-0 rounded-3 animate__animated animate__zoomIn"
+                    style="border-radius: 15px;">
+                    <div class="card-body p-4 p-lg-5" dir="rtl">
+                        <h2 class="text-center mb-4" style="color: #28a745;">فرم ویرایش کاربر</h2>
+                        <form action="{% url 'update_user' %}" method="POST">
+                            {% csrf_token %} {# توکن CSRF برای امنیت فرم #}
+                            {% for field in form %} {# حلقه برای نمایش فیلدهای فرم #}
+                            <div class="mb-3">
+                                <label class="form-label fw-bold" style="color: #333;">{{ field.label_tag }}</label>
+                                {{ field }}
+                                {% if field.errors %} {# نمایش خطاهای هر فیلد #}
+                                <div class="text-danger mt-1">
+                                    {{ field.errors }}
+                                </div>
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+                            <div class="d-flex justify-content-center">
+                                <button type="submit" class="btn btn-success" style="position:relative;">ویرایش</button>
+                                {# دکمه ارسال فرم برای ویرایش اطلاعات #}
+                                <a href="{% url 'update_password' %}" class="btn btn-warning" style="margin-right: 10%;">ویرایش رمز عبور</a>
+                                {# دکمه برای رفتن به صفحه ویرایش رمز عبور #}
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Optional CSS for Extra Styling: استایل فیلدها و دکمه‌ها -->
+<style>
+    .form-control {
+        border-radius: 8px;
+        border: 1px solid #28a745;
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+        border-color: #4caf50;
+        box-shadow: 0 0 8px rgba(40, 167, 69, 0.3);
+    }
+
+    .btn-success:hover {
+        background: #4caf50;
+        transform: translateY(-2px);
+    }
+
+    .card {
+        background: #f8f9fa;
+    }
+
+    .animate__animated {
+        animation-duration: 1s;
+    }
+</style>
+{% endblock %}

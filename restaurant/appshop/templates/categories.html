@@ -1,0 +1,55 @@
+{% load static %}
+
+{# ----- بخش دسته‌بندی‌ها (Category Area) ----- #}
+<!-- این بخش برای نمایش دسته‌بندی‌های مختلف غذاها در صفحه اصلی استفاده می‌شود -->
+<div class="post-catagory section-padding-100-0 mb-70">
+    <div class="container">
+        <div class="row justify-content-center">
+
+            {# ----- دسته‌بندی اول: غذای سلامتی ----- #}
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="single-post-catagory mb-30">
+                    <!-- تصویر دسته‌بندی -->
+                    <img src="{% static 'img/bg-img/4.jpg' %}" alt="غذای سلامتی">
+                    <!-- محتوای روی تصویر -->
+                    <div class="catagory-content-bg">
+                        <div class="catagory-content">
+                            {# برچسب دسته‌بندی #}
+                            <a href="#" class="post-tag">بهترین</a>
+                            {# عنوان دسته‌بندی #}
+                            <a href="#" class="post-title">غذای سلامتی</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {# ----- دسته‌بندی دوم: غذاهای ارگانیک ----- #}
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="single-post-catagory mb-30">
+                    <img src="{% static 'img/bg-img/5.jpg' %}" alt="غذاهای ارگانیک">
+                    <div class="catagory-content-bg">
+                        <div class="catagory-content">
+                            <a href="#" class="post-tag">بهترین</a>
+                            <a href="#" class="post-title">غذاهای ارگانیک</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {# ----- دسته‌بندی سوم: غذای سبزیجات ----- #}
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="single-post-catagory mb-30">
+                    <img src="{% static 'img/bg-img/6.jpg' %}" alt="غذای سبزیجات">
+                    <div class="catagory-content-bg">
+                        <div class="catagory-content">
+                            <a href="#" class="post-tag">بهترین</a>
+                            <a href="#" class="post-title">غذای سبزیجات</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{# ----- پایان بخش دسته‌بندی‌ها ----- #}

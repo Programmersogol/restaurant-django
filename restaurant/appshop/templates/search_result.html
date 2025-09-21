@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+<div class="container section-padding-100">
+
+    {# ----- عنوان نتایج جستجو ----- #}
+    <h2 class="mb-4">نتایج جستجو برای: "{{ query }}"</h2>
+
+    {% if products %}
+        <div class="row">
+            {% for product in products %}
+            {# ----- کارت محصول ----- #}
+            <div class="col-12 col-sm-6 col-lg-4 mb-4">
+                <div class="card h-100">
+                    {# تصویر محصول #}
+                    <img src="{{ product.image.url|default:'/static/images/default-product.jpg' }}" 
+                         class="card-img-top" alt="{{ product.name }}">
+                    
+                    <div class="card-body">
+                        {# نام و توضیح محصول #}
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <p class="card-text">{{ product.description }}</p>
+
+                        {# قیمت محصول با فرمت مناسب #}
+                        <p class="card-text">قیمت: {{ product.price|floatformat:2|intcomma }} تومان</p>
+
+                        {# انتخاب تعداد محصول #}
+                        <div class="input-group mb-3">
+                            <button class="btn btn-outline-secondary" type="button"
+                                    onclick="updateQuantity('{{ product.slug }}', -1)">-</button>
+                            <input type="number" class="form-control text-center" 
+                                   id="quantity-{{ product.slug }}" value="1" min="1">
+                            <button class="btn btn-outline-secondary" type="button"
+                                    onclick="updateQuantity('{{ product.slug }}', 1)">+</button>
+                        </div>
+
+                        {# دکمه افزودن به سبد خرید #}
+                        <button class="btn bueno-btn w-100" 
+                                onclick="addToCart('{{ product.slug }}')">افزودن به سبد خرید</button>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            {# پیغام در صورت عدم وجود محصول #}
+            <p class="text-center">هیچ محصولی برای "{{ query }}" یافت نشد.</p>
+            {% endfor %}
+        </div>
+    {% else %}
+        {# در صورتی که هیچ جستجویی انجام نشده باشد #}
+        <p class="text-center">لطفاً یک عبارت برای جستجو وارد کنید.</p>
+    {% endif %}
+
+    {# دکمه بازگشت به فروشگاه #}
+    <a href="{% url 'category' %}" class="btn bueno-btn mt-3">بازگشت به فروشگاه</a>
+</div>
+
+{# ----- JS: مدیریت تعداد و افزودن محصول به سبد خرید ----- #}
+<script>
+function updateQuantity(productSlug, change) {
+    let input = document.getElementById('quantity-' + productSlug);
+    let currentValue = parseInt(input.value);
+    if (currentValue + change >= 1) {
+        input.value = currentValue + change;
+    }
+}
+
+function addToCart(productSlug) {
+    let quantity = document.getElementById('quantity-' + productSlug).value;
+    fetch('{% url "add_to_cart" %}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: JSON.stringify({
+            product_slug: productSlug,
+            quantity: quantity
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('محصول به سبد خرید اضافه شد!');
+            // بروزرسانی تعداد سبد خرید در نوار بالایی
+            fetch('{% url "cart_item_count" %}')
+                .then(response => response.json())
+                .then(data => {
+                    const cartCount = document.querySelector('.cart-count');
+                    if (data.cart_item_count > 0) {
+                        cartCount.textContent = data.cart_item_count;
+                        cartCount.style.display = 'inline-flex';
+                    } else {
+                        cartCount.style.display = 'none';
+                    }
+                });
+        } else {
+            alert('خطا: ' + data.message);
+        }
+    });
+}
+</script>
+{% endblock %}

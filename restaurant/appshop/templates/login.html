@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}ورود کاربران{% endblock %}
+
+{% block content %}
+<!-- Header Section -->
+<header class="bg-success py-5" style="background: linear-gradient(135deg, #28a745, #4caf50);">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder animate__animated animate__fadeIn">ورود به حساب</h1>
+            <p class="lead fw-normal text-white-75 mb-0 animate__animated animate__fadeIn"
+                style="animation-delay: 0.3s;">سریع بیا خرید کن همه چی حراجه!</p>
+        </div>
+    </div>
+</header>
+
+<!-- Form Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow-lg border-0 rounded-3 animate__animated animate__zoomIn"
+                    style="border-radius: 15px;">
+                    <div class="card-body p-4 p-lg-5" dir="rtl">
+                        <h2 class="text-center mb-4" style="color: #28a745;">ورود کاربران</h2>
+                        <form action="{% url 'logins' %}" method="POST">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="id_username" class="form-label fw-bold" style="color: #333;">نام
+                                    کاربری</label>
+                                <input type="text" class="form-control" id="id_username" name="username"
+                                    placeholder="نام کاربری خود را وارد کنید">
+                            </div>
+                            <div class="mb-3">
+                                <label for="id_password" class="form-label fw-bold" style="color: #333;">رمز
+                                    عبور</label>
+                                <input type="password" class="form-control" id="id_password" name="password"
+                                    placeholder="رمز عبور خود را وارد کنید">
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <button type="submit" class="btn btn-success" style="position:relative;">ورود</button>
+                                    
+                               
+                            </div>
+                        </form>
+                        <div class="text-center mt-3">
+                            <a href="{% url 'SingUp' %}" class="text-success">حساب نداری؟ ثبت‌نام کن!</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Optional CSS -->
+<style>
+    .form-control {
+        border-radius: 8px;
+        border: 1px solid #28a745;
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+        border-color: #4caf50;
+        box-shadow: 0 0 8px rgba(40, 167, 69, 0.3);
+    }
+
+    .btn-success:hover {
+        background: #4caf50;
+        transform: translateY(-2px);
+
+    }
+
+    .card {
+        background: #f8f9fa;
+    }
+</style>
+{% endblock %}

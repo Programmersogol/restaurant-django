@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %} 
+{% load cart_extras %}
+
+{% block title %}صورت حساب{% endblock %}
+
+{% block content %}
+
+<!-- Header Section with background image -->
+<header class="bg-img bg-overlay bg-fixed"
+    style="background-image: url('{% static 'img/header-bg.jpg' %}'); height: 300px;">
+    <div class="container text-center py-5">
+        <!-- عنوان صفحه -->
+        <h1 class="display-4 text-white animate__animated animate__fadeInDown">صورت حساب</h1>
+        <!-- توضیح کوتاه -->
+        <p class="lead text-white mt-15 animate__animated animate__fadeInUp" style="animation-delay: 0.2s;">
+            خلاصه سفارشات خوشمزه شما
+        </p>
+    </div>
+</header>
+
+<!-- Main Container -->
+<div class="container mt-70 mb-70">
+    <div class="row">
+        <div class="col-12">
+            <!-- Card Wrapper for Order Details -->
+            <div class="bg-white shadow-lg rounded-lg">
+
+                <!-- Card Header -->
+                <div class="bg-gray p-4 border-b">
+                    <h2 class="text-amber-800 mb-0">جزئیات سفارش</h2>
+                </div>
+
+                <!-- Card Body -->
+                <div class="p-4">
+                    {% if cart_items %}
+                    
+                    <!-- Table of Cart Items -->
+                    <table class="table table-bordered mt-30">
+                        <thead>
+                            <tr class="bg-gray">
+                                <th class="py-3 px-4">محصول</th>
+                                <th class="py-3 px-4">قیمت واحد</th>
+                                <th class="py-3 px-4">تعداد</th>
+                                <th class="py-3 px-4">جمع</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in cart_items %}
+                            <!-- هر ردیف برای یک محصول -->
+                            <tr class="border-b hover:bg-gray-100 animate__animated animate__fadeIn"
+                                style="animation-delay: {{ forloop.counter|add:0 }}.1s;">
+                                <td class="py-3 px-4">{{ item.product.name }}</td>
+                                <td class="py-3 px-4">{{ item.product.price|floatformat:0|intcomma }} تومان</td>
+                                <td class="py-3 px-4">{{ item.quantity }}</td>
+                                <td class="py-3 px-4">
+                                    {% with total=item.quantity|multiply:item.product.price %}
+                                        {{ total|floatformat:0|intcomma }} تومان
+                                    {% endwith %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+
+                            <!-- ردیف جمع کل -->
+                            <tr class="bg-gray font-bold animate__animated animate__fadeInUp"
+                                style="animation-delay: {{ cart_items|length|add:0 }}.1s;">
+                                <td colspan="3" class="py-3 px-4 text-right">جمع کل</td>
+                                <td class="py-3 px-4">{{ total_price|floatformat:0|intcomma }} تومان</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- فرم مخفی برای ثبت سفارش -->
+                    <form id="create-order-form" method="POST" action="{% url 'create_order_from_cart' %}" style="display:none;">
+                        {% csrf_token %}
+                    </form>
+
+                    <!-- دکمه تأیید و پرداخت -->
+                    <div class="text-left mt-30">
+                        <a href="#" id="confirm-order" class="bueno-btn animate__animated animate__pulse"
+                            style="animation-delay: {{ cart_items|length|add:1 }}.1s;">
+                            تأیید و پرداخت
+                        </a>
+                    </div>
+
+                    <!-- JS: ارسال فرم مخفی هنگام تأیید -->
+                    <script>
+                        document.getElementById('confirm-order').addEventListener('click', function(e) {
+                            e.preventDefault();
+                            if (confirm('آیا مطمئن هستید که می‌خواهید سفارش را تأیید کنید؟')) {
+                                document.getElementById('create-order-form').submit();
+                            }
+                        });
+                    </script>
+
+                    {% else %}
+                    <!-- نمایش پیام در صورت خالی بودن سبد خرید -->
+                    <div class="text-center py-5">
+                        <p class="text-muted">سبد خرید شما خالی است.</p>
+                        <a href="{% url 'category' %}" class="bueno-btn mt-15">بازگشت به منوی رستوران</a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

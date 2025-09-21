@@ -1,0 +1,87 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>درباره ما - رستوران رضوی</title>
+  
+  <!-- لینک Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    /* فونت و استایل سفارشی */
+    body {
+      font-family: 'Vazirmatn', sans-serif;
+    }
+
+    /* پس‌زمینه گرادیان */
+    .gradient-bg {
+      background: linear-gradient(135deg, #059669 0%, #065f46 100%);
+    }
+
+    /* سایه کارت سفارشی */
+    .card-shadow {
+      box-shadow: 
+        0 20px 25px -5px rgba(0, 0, 0, 0.1), 
+        0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+  </style>
+</head>
+<body class="min-h-screen gradient-bg">
+
+  <div class="container mx-auto px-4 py-16">
+    <!-- هدر صفحه -->
+    <div class="text-center mb-16">
+      <h1 class="text-5xl font-bold text-white mb-4">درباره ما</h1>
+      <p class="text-xl text-white/80">
+        با عشق و کیفیت، تجربه‌ای متفاوت از غذا را برای شما رقم می‌زنیم.
+      </p>
+    </div>
+
+    <!-- بخش درباره ما (چیدمان دو ستونه) -->
+    <div class="max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 items-start">
+      
+      <!-- کارت متن درباره ما -->
+      <div class="bg-white rounded-2xl p-8 card-shadow leading-relaxed">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-6">داستان رستوران رضوی</h2>
+        <p class="text-gray-700 mb-4">
+          رستوران رضوی فعالیت خود را از سال ۱۳۸۵ با هدف ارائه‌ی غذاهای اصیل ایرانی و بین‌المللی آغاز کرد. 
+          ما باور داریم که غذا تنها یک وعده‌ی خوراکی نیست، بلکه تجربه‌ای است سرشار از عشق، خاطره و لذت.
+        </p>
+        <p class="text-gray-700 mb-4">
+          در این سال‌ها، با بهره‌گیری از بهترین مواد اولیه و همراهی تیمی حرفه‌ای از سرآشپزان مجرب، 
+          توانسته‌ایم اعتماد و رضایت مشتریانمان را به‌دست آوریم.
+        </p>
+        <p class="text-gray-700">
+          هدف ما ایجاد محیطی دلنشین، غذایی سالم و خدماتی شایسته است؛ تا هر بار حضور شما در رستوران رضوی، 
+          خاطره‌ای خوش و ماندگار برایتان رقم بخورد.
+        </p>
+      </div>
+
+      <!-- سایدبار (ارزش‌ها + تصویر) -->
+      <div class="space-y-8">
+
+        <!-- کارت ارزش‌ها -->
+        <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6 text-white">
+          <h3 class="text-xl font-semibold mb-4">✨ ارزش‌های ما</h3>
+          <ul class="space-y-2 list-disc list-inside">
+            <li>کیفیت بالای غذا</li>
+            <li>رضایت مشتری</li>
+            <li>محیطی گرم و دوستانه</li>
+            <li>نوآوری در منو</li>
+          </ul>
+        </div>
+
+        <!-- کارت تصویر -->
+        <div class="bg-white/10 backdrop-blur-lg rounded-2xl overflow-hidden">
+          <img src="{% static 'img/bg-img/imgrazavirest.png' %}" 
+               alt="رستوران رضوی" 
+               class="w-full h-94 object-cover">
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

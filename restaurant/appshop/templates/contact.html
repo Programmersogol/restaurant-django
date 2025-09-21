@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تماس با ما - رستوران رضوی</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    /* فونت سایت */
+    body {
+      font-family: 'Vazirmatn', sans-serif;
+    }
+
+    /* پس‌زمینه گرادیان سبز */
+    .gradient-bg {
+      background: linear-gradient(135deg, #059669 0%, #065f46 100%);
+    }
+
+    /* سایه کارت‌ها */
+    .card-shadow {
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 
+                  0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+  </style>
+</head>
+<body class="min-h-screen gradient-bg">
+
+  {# ----- کانتینر اصلی صفحه ----- #}
+  <div class="container mx-auto px-4 py-16">
+
+    {# ----- عنوان صفحه و زیرعنوان ----- #}
+    <div class="text-center mb-16">
+      <h1 class="text-5xl font-bold text-white mb-4">تماس با ما</h1>
+      <p class="text-xl text-white/80">
+        برای رزرو، سفارش یا ارسال پیام با ما در ارتباط باشید.
+      </p>
+    </div>
+
+    {# ----- شبکه دو ستونه: فرم (سمت چپ) + اطلاعات تماس (سمت راست) ----- #}
+    <div class="max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 items-start">
+
+      {# ----- کارت فرم تماس ----- #}
+      <div class="bg-white rounded-2xl p-8 card-shadow">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-6">پیام خود را ارسال کنید</h2>
+        
+        {# ----- فرم Django ----- #}
+        <form method="post" action="{% url 'contact' %}" class="space-y-6">
+          {% csrf_token %}
+          
+          {# فیلد پیام ----- #}
+          <div>
+            <label for="id_message" class="block text-sm font-medium text-gray-700 mb-2">پیام شما</label>
+            {{ form.message }}
+          </div>
+
+          {# دکمه ارسال پیام ----- #}
+          <button type="submit" 
+            class="w-full bg-green-600 text-white font-semibold py-3 rounded-lg hover:bg-green-700 transition-all">
+            ارسال پیام
+          </button>
+        </form>
+
+        {# نمایش پیام‌های موفقیت یا خطا ----- #}
+        {% if messages %}
+          <div class="mt-6">
+            {% for message in messages %}
+              <div class="p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg">
+                {{ message }}
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+
+      {# ----- بخش اطلاعات تماس ----- #}
+      <div class="space-y-8">
+
+        {# شماره تماس ----- #}
+        <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6">
+          <h3 class="text-xl font-semibold text-white mb-2">📞 شماره تماس</h3>
+          <p class="text-white/90">021-1234-5678</p>
+          <p class="text-white/90">0912-345-6789</p>
+        </div>
+
+        {# ایمیل ----- #}
+        <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6">
+          <h3 class="text-xl font-semibold text-white mb-2">📧 ایمیل</h3>
+          <p class="text-white/90">info@restaurant-razavi.com</p>
+        </div>
+
+        {# آدرس + نقشه گوگل ----- #}
+        <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6">
+          <h3 class="text-xl font-semibold text-white mb-4">📍 آدرس</h3>
+          <p class="text-white/90 mb-4">تهران، خیابان ولیعصر، نرسیده به میدان ونک، پلاک ۱۲۳</p>
+          
+          {# نقشه گوگل تعبیه شده ----- #}
+          <iframe 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3239.425683391167!2d51.3890!3d35.6892!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzXCsDQxJzIxLjMiTiA1McKwMjMnMjAuNiJF!5e0!3m2!1sen!2sir!4v1693836000000!5m2!1sen!2sir"
+            width="100%" height="250" style="border:0; border-radius:12px;" allowfullscreen="" loading="lazy">
+          </iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

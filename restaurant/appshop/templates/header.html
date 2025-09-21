@@ -1,0 +1,155 @@
+{% load static %}
+
+<!-- ========================= Header Area Start ========================= -->
+<header class="header-area">
+
+    {# ----- Top Header Area با تصویر پس‌زمینه ----- #}
+    <div class="top-header-area bg-img bg-overlay" style="background-image: url({% static 'img/bg-img/header.jpg' %});">
+        <div class="container h-100">
+            <div class="row h-100 align-items-center justify-content-between">
+
+                {# ----- لینک‌های شبکه‌های اجتماعی ----- #}
+                <div class="col-12 col-sm-6">
+                    <nav>
+                        <!-- Reserved space for top navigation (optional) -->
+                    </nav>
+                    <div class="top-social-info">
+                        <!-- آیکون شبکه‌های اجتماعی با tooltip -->
+                        <a href="https://www.pinterest.com/" data-toggle="tooltip" data-placement="bottom"
+                            title="Pinterest"><i class="fa fa-pinterest"></i></a>
+                        <a href="https://www.facebook.com/" data-toggle="tooltip" data-placement="bottom"
+                            title="Facebook"><i class="fa fa-facebook"></i></a>
+                        <a href="https://x.com/" data-toggle="tooltip" data-placement="bottom" title="Twitter"><i
+                                class="fa fa-twitter"></i></a>
+                        <a href="https://dribbble.com/" data-toggle="tooltip" data-placement="bottom"
+                            title="Dribbble"><i class="fa fa-dribbble"></i></a>
+                        <a href="https://www.behance.net/" data-toggle="tooltip" data-placement="bottom"
+                            title="Behance"><i class="fa fa-behance"></i></a>
+                        <a href="https://www.linkedin.com/" data-toggle="tooltip" data-placement="bottom"
+                            title="LinkedIn"><i class="fa fa-linkedin"></i></a>
+                    </div>
+                </div>
+
+                {# ----- فرم جستجوی بالا ----- #}
+                <div class="col-12 col-sm-6 col-lg-5 col-xl-4 top-search-wrapper">
+                    <div class="top-search-area">
+                        <form action="{% url 'search' %}" method="post">
+                            {% csrf_token %}
+                            <input type="search" name="top-search" id="topSearch" placeholder="جستجو در سایت..."
+                                required>
+                            <button type="submit" class="btn"><i class="fa fa-search"></i></button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    {# ----- بخش لوگو ----- #}
+    <div class="logo-area">
+        <a href="{% url 'home' %}">
+            <img src="{% static 'img/core-img/logorazavi.jpg' %}" style="width: 60%; border-radius: 30px;"
+                alt="Site Logo">
+        </a>
+    </div>
+
+    {# ----- منوی اصلی سایت ----- #}
+    <div class="bueno-main-menu" id="sticker">
+        <div class="classy-nav-container breakpoint-off">
+            <div class="container">
+                <nav class="classy-navbar justify-content-between" id="buenoNav">
+
+                    {# آیکون منوی موبایل ----- #}
+                    <div id="toggler"><img src="{% static 'img/core-img/toggler.png' %}" alt="Menu Toggle"></div>
+                    <div class="classy-navbar-toggler">
+                        <span class="navbarToggler"><span></span><span></span><span></span></span>
+                    </div>
+
+                    {# منو اصلی ----- #}
+                    <div class="classy-menu">
+
+                        {# دکمه بستن منوی موبایل ----- #}
+                        <div class="classycloseIcon">
+                            <div class="cross-wrap"><span class="top"></span><span class="bottom"></span></div>
+                        </div>
+
+                        {# شروع ناوبری ----- #}
+                        <div class="classynav">
+                            <ul>
+                                <!-- لینک‌های اصلی -->
+                                <li><a href="{% url 'home' %}">صفحه نخست</a></li>
+                                <li><a href="{% url 'about' %}">درباره ما</a></li>
+                                <li><a href="#">صفحات</a>
+                                    <ul class="dropdown">
+                                        <!-- زیرمنو صفحات -->
+                                        <li><a href="{% url 'home' %}">صفحه نخست</a></li>
+                                        <li><a href="{% url 'category' %}">دسته بندی</a></li>
+                                        <li><a href="{% url 'cart_detail' %}">رسید خرید</a></li>
+                                        <li><a href="{% url 'contact' %}">تماس با ما</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="{% url 'contact' %}">تماس با ما</a></li>
+
+                                <li class="cart-icon">
+                                    <a href="{% url 'cart_detail' %}" class="cart-link" title="سبد خرید">
+                                        <div class="cart-wrapper" id="cartWrapper">
+                                            <!-- SVG آیکون سبد خرید -->
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="28"
+                                                height="28" fill="none" stroke="currentColor" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round">
+                                                <circle cx="9" cy="21" r="1"></circle>
+                                                <circle cx="20" cy="21" r="1"></circle>
+                                                <path
+                                                    d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6">
+                                                </path>
+                                            </svg>
+
+                                            <!-- عدد سبد خرید همیشه نمایش داده می‌شود -->
+                                            <span class="cart-count" id="cartCount">{{ cart_item_count }}</span>
+                                        </div>
+                                    </a>
+                                </li>
+                                <script>
+                                    const cartWrapper = document.getElementById('cartWrapper');
+                                    cartWrapper.addEventListener('click', function () {
+                                        this.classList.toggle('clicked');
+                                    });
+                                </script>
+
+                            </ul>
+
+                            {# بخش ورود و پروفایل کاربری ----- #}
+                            <div class="login-area">
+                                {% if user.is_authenticated %}
+                                <!-- کاربر وارد شده -->
+                                <a class="nav-link" href="{% url 'update_user' %}">ویرایش پروفایل</a>
+                                <a class="nav-link" href="{% url 'logouts' %}">خروج</a>
+
+                                <!-- زیرمنوی پروفایل -->
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        پروفایل
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" href="{% url 'update_user' %}">پروفایل کاربری</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="{% url 'update_info' %}">اطلاعات کاربری</a>
+                                    </div>
+                                </li>
+                                {% else %}
+                                <!-- کاربر مهمان -->
+                                <a class="nav-link" href="{% url 'logins' %}">ورود</a>
+                                <a class="nav-link" href="{% url 'SingUp' %}">ثبت نام</a>
+                                {% endif %}
+                            </div>
+                            {# پایان ناوبری ----- #}
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- ========================= Header Area End ========================= -->

@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+{% load humanize %}
+
+<!-- Container for Order Details -->
+<div class="container mt-4">
+
+    <!-- Order Header -->
+    <!-- نمایش شماره سفارش -->
+    <h2>جزئیات سفارش شماره {{ order.id }}</h2>
+
+    <!-- Customer Information -->
+    <!-- اطلاعات مشتری -->
+    <p><strong>نام مشتری:</strong> {{ order.full_name }}</p>
+    <p><strong>ایمیل:</strong> {{ order.email }}</p>
+    <p><strong>آدرس:</strong> {{ order.shipping_address }}</p>
+    <p><strong>مبلغ:</strong> {{ order.amount_paid|intcomma }} تومان</p>
+    <p><strong>تاریخ:</strong> {{ order.date_order }}</p>
+    <p><strong>وضعیت:</strong> {{ order.get_status_display }}</p>
+
+    <!-- List of Ordered Products -->
+    <h4>محصولات سفارش</h4>
+    <ul>
+        {% for item in order.orderitem_set.all %}
+            <!-- هر محصول در سفارش -->
+            <li>{{ item.products.name }} × {{ item.quantity }} → {{ item.price|intcomma }} تومان</li>
+        {% endfor %}
+    </ul>
+
+    <!-- Payment or Status Badge -->
+    <!-- نمایش دکمه پرداخت یا وضعیت سفارش -->
+    {% if order.status == 'pending' %}
+        <!-- لینک به پرداخت برای سفارش‌های معلق -->
+        <a href="{% url 'fake_payment' order.id %}" class="btn btn-success" style="margin-top: 5px;">پرداخت</a>
+    {% elif order.status == 'paid' %}
+        <!-- نشان پرداخت شده -->
+        <span class="badge bg-success">پرداخت شده</span>
+    {% elif order.status == 'canceled' %}
+        <!-- نشان لغو شده -->
+        <span class="badge bg-danger">لغو شده</span>
+    {% endif %}
+</div>
+{% endblock %}
